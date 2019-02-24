@@ -8,5 +8,9 @@ namespace fifaCoinsBestEver.dte {
             Name = name;
             Value = value;   
         }
+
+        public UserRoleType()
+        {
+        }
     }
 }

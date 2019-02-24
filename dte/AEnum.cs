@@ -18,7 +18,7 @@ namespace fifaCoinsBestEver.dte
         
         public static List<AEnum> findAll(Type type)
         {
-            if(type == typeof(AEnum)) return type.GetFields(BindingFlags.Static).Select(f => (AEnum) f.GetValue(null)).ToList();
+            if(type != null && type.IsSubclassOf(typeof(AEnum))) return type.GetFields().Select(f => (AEnum) f.GetValue(null)).ToList();
             throw new System.ArgumentException();
         }
         public static AEnum FromString(string roleString, Type type)
