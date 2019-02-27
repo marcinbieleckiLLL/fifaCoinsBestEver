@@ -11,10 +11,10 @@ namespace fifaCoinsBestEver.dte
 {
     public abstract class AEnum
     {
-        public string Name { get; protected set; }
+        public string name { get; protected set; }
         [Key]  
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Value { get; protected set; }
+        public int value { get; protected set; }
         
         public static List<AEnum> findAll(Type type)
         {
@@ -23,12 +23,12 @@ namespace fifaCoinsBestEver.dte
         }
         public static AEnum FromString(string roleString, Type type)
         {
-            return findAll(type).Single(r => String.Equals(r.Name, roleString, StringComparison.OrdinalIgnoreCase));
+            return findAll(type).Single(r => String.Equals(r.name, roleString, StringComparison.OrdinalIgnoreCase));
         }
  
         public static AEnum FromValue(int value, Type type)
         {
-            return findAll(type).Single(r => r.Value == value);
+            return findAll(type).Single(r => r.value == value);
         }
     }
 }

@@ -5,8 +5,8 @@ namespace fifaCoinsBestEver.dte {
         
         public UserRoleType(string name, int value)
         {
-            Name = name;
-            Value = value;   
+            this.name = name;
+            this.value = value;   
         }
 
         public UserRoleType()

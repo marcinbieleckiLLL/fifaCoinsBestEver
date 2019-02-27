@@ -17,43 +17,156 @@ namespace fifaCoinsBestEver.Migrations
                 .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("fifaCoinsBestEver.Models.Customer", b =>
+                {
+                    b.Property<long>("id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("dateOfBirth");
+
+                    b.Property<string>("firstName");
+
+                    b.Property<string>("lastName");
+
+                    b.Property<DateTime?>("modDate");
+
+                    b.Property<long>("userId");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("userId")
+                        .IsUnique();
+
+                    b.ToTable("customers");
+                });
+
+            modelBuilder.Entity("fifaCoinsBestEver.Models.Product", b =>
+                {
+                    b.Property<long>("id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("modDate");
+
+                    b.Property<string>("name");
+
+                    b.Property<long>("price");
+
+                    b.Property<long?>("productTypevalue");
+
+                    b.Property<long>("quantity");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("productTypevalue");
+
+                    b.ToTable("products");
+                });
+
+            modelBuilder.Entity("fifaCoinsBestEver.Models.Transaction", b =>
+                {
+                    b.Property<long>("id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<long?>("customerid");
+
+                    b.Property<DateTime?>("from");
+
+                    b.Property<bool>("isPaid");
+
+                    b.Property<DateTime?>("modDate");
+
+                    b.Property<long>("productId");
+
+                    b.Property<DateTime?>("to");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("customerid");
+
+                    b.HasIndex("productId")
+                        .IsUnique();
+
+                    b.ToTable("transations");
+                });
+
             modelBuilder.Entity("fifaCoinsBestEver.Models.User", b =>
                 {
-                    b.Property<long>("userId")
+                    b.Property<long>("id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("email");
 
                     b.Property<DateTime?>("modDate");
 
                     b.Property<string>("pwd");
 
-                    b.Property<int?>("typeValue");
+                    b.Property<long?>("typevalue");
 
                     b.Property<string>("username");
 
-                    b.HasKey("userId");
+                    b.HasKey("id");
 
-                    b.HasIndex("typeValue");
+                    b.HasIndex("typevalue");
 
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("fifaCoinsBestEver.dte.UserRoleType", b =>
+            modelBuilder.Entity("fifaCoinsBestEver.dte.ProductType", b =>
                 {
-                    b.Property<int>("Value")
+                    b.Property<long>("value")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("name");
 
-                    b.HasKey("Value");
+                    b.HasKey("value");
 
-                    b.ToTable("UserRoleType");
+                    b.ToTable("productTypes");
+                });
+
+            modelBuilder.Entity("fifaCoinsBestEver.dte.UserRoleType", b =>
+                {
+                    b.Property<long>("value")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("name");
+
+                    b.HasKey("value");
+
+                    b.ToTable("userRoleTypes");
+                });
+
+            modelBuilder.Entity("fifaCoinsBestEver.Models.Customer", b =>
+                {
+                    b.HasOne("fifaCoinsBestEver.Models.User", "user")
+                        .WithOne("customer")
+                        .HasForeignKey("fifaCoinsBestEver.Models.Customer", "userId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("fifaCoinsBestEver.Models.Product", b =>
+                {
+                    b.HasOne("fifaCoinsBestEver.dte.ProductType", "productType")
+                        .WithMany()
+                        .HasForeignKey("productTypevalue");
+                });
+
+            modelBuilder.Entity("fifaCoinsBestEver.Models.Transaction", b =>
+                {
+                    b.HasOne("fifaCoinsBestEver.Models.Customer", "customer")
+                        .WithMany("transactions")
+                        .HasForeignKey("customerid");
+
+                    b.HasOne("fifaCoinsBestEver.Models.Product", "product")
+                        .WithOne("transaction")
+                        .HasForeignKey("fifaCoinsBestEver.Models.Transaction", "productId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("fifaCoinsBestEver.Models.User", b =>
                 {
                     b.HasOne("fifaCoinsBestEver.dte.UserRoleType", "type")
                         .WithMany()
-                        .HasForeignKey("typeValue");
+                        .HasForeignKey("typevalue");
                 });
 #pragma warning restore 612, 618
         }
